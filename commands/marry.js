@@ -1,6 +1,26 @@
 /**
- * @typedef {import('discord.js')} Discord
+ * @param {import('discord.js').Message} message
+ * @param {import('picbot-engine').GuildMemberData} memberData 
+ * @param {import('discord.js').GuildMember} otherMember 
  */
+const testAlreadyMarried = async (message, memberData, otherMember) => {
+    const partnerId = memberData.getProperty('partner', '');
+    const alreadyMarried = partnerId != '';
+
+    if (alreadyMarried) {
+        const oldPartner = message.guild.member(partnerId);
+        if (oldPartner) {
+            await message.reply(`Так... **${memberData.member.displayName}** уже в браке с **${otherMember.displayName}**... **ХМ~**`);
+            return false;
+        }
+        else {
+            await message.reply(`**${memberData.member.displayName}** уже в браке с... отсутствующим участником сервера. Думаю никто не обидется~`);
+            memberData.deleteProperty('partner');
+        }
+    }
+
+    return true;
+}
 
 /**
  * @type {import('picbot-engine').Command}
@@ -17,35 +37,22 @@ const marryCommand = {
 
     syntax: '<member:target=_>',
 
-    /**
-     * @param {{ args: { target: Discord.GuildMember } } & import('picbot-engine').CommandContext} param0
-     */
     execute: async ({ executor, message, args: { target }, bot: { database } }) => {
-        const memberData = await database.getMemberData(target);
+        const executorData = await database.getMemberData(executor);
+        if (!(await testAlreadyMarried(message, executorData, target)))
+            return;
 
-        const defaultId = '';
-        const oldPartnerId = memberData.getProperty('partner', defaultId);
-        const alreadyMarried = oldPartnerId != defaultId;
-
-        if (alreadyMarried) {
-            const oldPartner = message.guild.member(oldPartnerId);
-            if (oldPartner) {
-                await message.reply(`ты уже в браке с **${oldPartner.displayName}**!`);
-                return;
-            }
-            else {
-                await message.reply(`ты уже в браке с... отсутвующим участником сервера. Думаю никто не обидится~`);
-                memberData.deleteProperty('partner');
-            }
-        }
+        const targetData = await database.getMemberData(target);
+        if (!(await testAlreadyMarried(message, targetData, executor)))
+            return;
 
         await message.channel.send(`**${target.displayName}**, напиши **да**, чтобы пожениться с **${executor.displayName}**`);
 
         /**
-         * @param {{ content: string; }} m
+         * @param {{ content: string; }} msg
          */
-        const filter = m => {
-            const lower = m.content.toLowerCase();
+        const filter = msg => {
+            const lower = msg.content.toLowerCase();
             return lower.startsWith('да') || lower.startsWith('нет');
         };
 
@@ -60,7 +67,8 @@ const marryCommand = {
         const success = result.first().content.toLowerCase().startsWith('да');
 
         if (success) {
-            memberData.setProperty('partner', target.id);
+            executorData.setProperty('partner', target.id);
+            targetData.setProperty('partner', executor.id);
             await message.reply('ура! Всё прошло успешно! 💘');
         }
         else {
