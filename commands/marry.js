@@ -9,7 +9,11 @@ const marryCommand = {
     name: 'marry',
 
     description: 'Женит вас на участнике сервера `target`',
-    group: 'Фан',
+    group: 'Отношения',
+
+    examples: [
+        '`!marry @Test` поженит вас на участнике сервера @Test',
+    ],
 
     syntax: '<member:target=_>',
 
