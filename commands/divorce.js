@@ -24,7 +24,10 @@ const divorceCommand = {
             return;
         }
 
+        const partnerData = await database.getMemberData(partner);
+
         executorData.deleteProperty('partner');
+        partnerData.deleteProperty('partner');
         await message.reply(`ты успешно развёлся с **${partner.displayName}**. *К этому всё и шло...*`);
     },
 }
