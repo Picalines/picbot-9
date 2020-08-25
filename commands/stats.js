@@ -39,7 +39,7 @@ const statsCommand = {
         const partnerId = memberData.getProperty('partner', '');
         let partner;
         if (partnerId != '' && (partner = message.guild.member(partnerId))) {
-            embed.addField('Вторая половинка', `**${partner.displayName}**`);
+            embed.addField('Вторая половинка', partner.toString());
         }
 
         embed.addFields([
