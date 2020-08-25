@@ -1,20 +1,21 @@
 /**
  * @param {import('discord.js').Message} message
  * @param {import('picbot-engine').GuildMemberData} memberData 
- * @param {import('discord.js').GuildMember} otherMember 
+ * @param {boolean} isExecutor 
  */
-const testAlreadyMarried = async (message, memberData, otherMember) => {
+const testAlreadyMarried = async (message, memberData, isExecutor) => {
     const partnerId = memberData.getProperty('partner', '');
     const alreadyMarried = partnerId != '';
 
     if (alreadyMarried) {
         const oldPartner = message.guild.member(partnerId);
+        let firstPart = isExecutor ? 'ты' : `**${memberData.member.displayName}**`;
         if (oldPartner) {
-            await message.reply(`Так... **${memberData.member.displayName}** уже в браке с **${otherMember.displayName}**... **ХМ~**`);
+            await message.reply(`${firstPart} уже в браке с **${oldPartner.displayName}**`);
             return false;
         }
         else {
-            await message.reply(`**${memberData.member.displayName}** уже в браке с... отсутствующим участником сервера. Думаю никто не обидется~`);
+            await message.reply(`${firstPart} уже в браке с... отсутствующим участником сервера. Думаю никто не обидется~`);
             memberData.deleteProperty('partner');
         }
     }
@@ -39,11 +40,11 @@ const marryCommand = {
 
     execute: async ({ executor, message, args: { target }, bot: { database } }) => {
         const executorData = await database.getMemberData(executor);
-        if (!(await testAlreadyMarried(message, executorData, target)))
+        if (!(await testAlreadyMarried(message, executorData, true)))
             return;
 
         const targetData = await database.getMemberData(target);
-        if (!(await testAlreadyMarried(message, targetData, executor)))
+        if (!(await testAlreadyMarried(message, targetData, false)))
             return;
 
         await message.channel.send(`**${target.displayName}**, напиши **да**, чтобы пожениться с **${executor.displayName}**`);
