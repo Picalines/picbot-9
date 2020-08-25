@@ -36,6 +36,12 @@ const statsCommand = {
             embed.addField('Предупреждения', warns);
         }
 
+        const partnerId = memberData.getProperty('partner', '');
+        let partner;
+        if (partnerId != '' && (partner = message.guild.member(partnerId))) {
+            embed.addField('Вторая половинка', `**${partner.displayName}**`);
+        }
+
         embed.addFields([
             { name: 'Опыт', value: xp, inline: true },
             { name: 'Уровень', value: calculateLevel(xp), inline: true },
