@@ -36,7 +36,7 @@ const marryCommand = {
         '`!marry @Test` поженит вас на участнике сервера @Test',
     ],
 
-    syntax: '<member:target=_>',
+    syntax: '<member:target>',
 
     execute: async ({ executor, message, args: { target }, bot: { database } }) => {
         const executorData = await database.getMemberData(executor);
