@@ -1,7 +1,7 @@
 {
-    "name": "picbot-3",
+    "name": "picbot-9",
     "version": "1.0.0",
-    "description": "third version of picbot",
+    "description": "ninth (actually third) version of picbot",
     "main": "index.js",
     "scripts": {
         "start": "node ."
