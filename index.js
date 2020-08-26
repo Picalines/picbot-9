@@ -21,8 +21,21 @@ bot.on('memberPlainMessage', async message => {
     data.setProperty('xp', xp + 1);
 });
 
-readdirSync('./commands/').filter(file => file.endsWith('.js')).forEach(commandFile => {
-    /** @type {import('picbot-engine').Command} */
+/** @param {string} file */
+const filterJsFiles = file => file.endsWith('.js');
+
+/**
+ * @param {import('fs').PathLike} path
+ * @param {(value: string, index: number, array: string[]) => void} f
+ */
+const readJsFromSync = (path, f) => readdirSync(path).filter(filterJsFiles).forEach(f);
+
+readJsFromSync('./arguments', argFile => {
+    const argument = require(`./arguments/${argFile}`);
+    bot.commandArguments.register(argument.name, argument.reader);
+});
+
+readJsFromSync('./commands/', commandFile => {
     const command = require(`./commands/${commandFile}`);
     bot.commands.register(command.name, command);
 });
