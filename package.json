@@ -15,6 +15,8 @@
     "dependencies": {
         "@types/node": "^14.0.27",
         "discord.js": "^12.2.0",
-        "dotenv": "^8.2.0"
+        "dotenv": "^8.2.0",
+        "popyt": "^4.1.1",
+        "ytdl-core-discord": "git+https://github.com/amishshah/ytdl-core-discord.git"
     }
 }

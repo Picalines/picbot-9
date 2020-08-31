@@ -1,8 +1,13 @@
 const { Bot, BuiltInDatabase: { getJsonBotDatabaseHandler } } = require('picbot-engine');
 const { readdirSync } = require('fs');
 const { join } = require('path');
+const { YouTube } = require('popyt');
 
 require('dotenv').config();
+
+const youtube = new YouTube(process.env.YOUTUBE_API_KEY);
+console.log('youtube api initialized successfully');
+module.exports.youtube = youtube;
 
 const bot = new Bot({
     database: {
