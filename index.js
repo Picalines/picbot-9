@@ -1,5 +1,8 @@
 const { Bot, BuiltInDatabase: { getJsonBotDatabaseHandler } } = require('picbot-engine');
 const { readdirSync } = require('fs');
+const { join } = require('path');
+
+require('dotenv').config();
 
 const bot = new Bot({
     database: {
@@ -11,7 +14,10 @@ const bot = new Bot({
         }),
     },
     guild: {
-        defaultPrefixes: ['picbot.'],
+        defaultPrefixes: [
+            'picbot.',
+            'p9.',
+        ],
     }
 });
 
@@ -30,14 +36,25 @@ const filterJsFiles = file => file.endsWith('.js');
  */
 const readJsFromSync = (path, f) => readdirSync(path).filter(filterJsFiles).forEach(f);
 
-readJsFromSync('./arguments', argFile => {
-    const argument = require(`./arguments/${argFile}`);
+const ignoreModuleKey = '__ignoreBotModule';
+
+/**
+ * @param {string} folderPath
+ * @param {(arg0: any) => void} f
+ */
+const requireJsFilesSync = (folderPath, f) => readJsFromSync(folderPath, file => {
+    const m = require('.\\' + join(folderPath, file));
+    if (m[ignoreModuleKey] !== true) {
+        f(m);
+    }
+});
+
+requireJsFilesSync('./arguments', argument => {
     bot.commandArguments.register(argument.name, argument.reader);
 });
 
-readJsFromSync('./commands/', commandFile => {
-    const command = require(`./commands/${commandFile}`);
+requireJsFilesSync('./commands/', command => {
     bot.commands.register(command.name, command);
 });
 
-bot.loginFromFile('./token.txt');
+bot.login(process.env.DISCORD_TOKEN);
