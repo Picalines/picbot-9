@@ -19,3 +19,24 @@ module.exports.randomRangeInt = (min, max) => {
  * @param {number} max
  */
 module.exports.clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+/**
+ * @param {number} seconds
+ */
+module.exports.timestamp = (seconds) => {
+    const dateObj = new Date(seconds * 1000);
+    const hours = dateObj.getUTCHours().toString();
+    const minutes = dateObj.getUTCMinutes().toString();
+    seconds = dateObj.getSeconds();
+
+    return hours.padStart(2, '0') 
+        + ':' + minutes.padStart(2, '0')
+        + ':' + seconds.toString().padStart(2, '0');
+}
+
+/**
+ * @param {number} number
+ * @param {number} min
+ * @param {number} max
+ */
+module.exports.inRange = (number, min, max) => number >= min && number <= max;
