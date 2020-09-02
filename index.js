@@ -1,3 +1,4 @@
+const { Client } = require('discord.js');
 const { Bot, BuiltInDatabase: { getJsonBotDatabaseHandler } } = require('picbot-engine');
 const { readdirSync } = require('fs');
 const { join } = require('path');
@@ -6,12 +7,11 @@ const { YouTube } = require('popyt');
 require('dotenv').config();
 
 const youtube = new YouTube(process.env.YOUTUBE_API_KEY);
-console.log('youtube api initialized successfully');
+
 module.exports.youtube = youtube;
 
-const bot = new Bot({
+const bot = new Bot(new Client(), {
     database: {
-        ignoreBots: true,
         handler: getJsonBotDatabaseHandler({
             dirPath: 'database/',
             guildsPath: 'guilds/',
@@ -26,11 +26,7 @@ const bot = new Bot({
     }
 });
 
-bot.on('memberPlainMessage', async message => {
-    const data = await bot.database.getMemberData(message.member);
-    const xp = data.getProperty('xp', 0);
-    data.setProperty('xp', xp + 1);
-});
+module.exports.bot = bot;
 
 /** @param {string} file */
 const filterJsFiles = file => file.endsWith('.js');
@@ -45,13 +41,19 @@ const ignoreModuleKey = '__ignoreBotModule';
 
 /**
  * @param {string} folderPath
- * @param {(arg0: any) => void} f
+ * @param {(exported: any, file: string) => void} f
  */
 const requireJsFilesSync = (folderPath, f) => readJsFromSync(folderPath, file => {
     const m = require('.\\' + join(folderPath, file));
     if (m[ignoreModuleKey] !== true) {
-        f(m);
+        f(m, file.substr(0, file.length - 3));
     }
+});
+
+requireJsFilesSync('./events', (listener, name) => {
+    bot.on(name, (...args) => {
+        listener(bot, ...args);
+    });
 });
 
 requireJsFilesSync('./arguments', argument => {
