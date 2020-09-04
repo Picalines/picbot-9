@@ -1,16 +1,19 @@
+// @ts-ignore
+require('ytpl').do_warn_deprecate = false;
+
 const { Client } = require('discord.js');
 const { Bot, BuiltInDatabase: { getJsonBotDatabaseHandler } } = require('picbot-engine');
 const { readdirSync } = require('fs');
 const { join } = require('path');
-const { YouTube } = require('popyt');
 const { Player } = require('discord-player');
 
 require('dotenv').config();
 
-const youtube = new YouTube(process.env.YOUTUBE_API_KEY);
-module.exports.youtube = youtube;
+const client = new Client();
 
-const bot = new Bot(new Client(), {
+const player = new Player(client);
+
+const bot = new Bot(client, {
     database: {
         handler: getJsonBotDatabaseHandler({
             dirPath: 'database/',
@@ -26,7 +29,9 @@ const bot = new Bot(new Client(), {
     }
 });
 
-module.exports.bot = bot;
+module.exports = {
+    client, player, bot,
+};
 
 /** @param {string} file */
 const filterJsFiles = file => file.endsWith('.js');
