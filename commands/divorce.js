@@ -1,7 +1,6 @@
-/**
- * @type {import('picbot-engine').Command}
- */
-const divorceCommand = {
+const { Command } = require("picbot-engine");
+
+const divorceCommand = new Command({
     name: 'divorce',
 
     description: 'Расторгает ваш брак. Это может быть обидно',
@@ -30,6 +29,6 @@ const divorceCommand = {
         partnerData.deleteProperty('partner');
         await message.reply(`ты успешно развёлся с **${partner.displayName}**. *К этому всё и шло...*`);
     },
-}
+});
 
 module.exports = divorceCommand;

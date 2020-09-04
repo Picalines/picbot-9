@@ -3,11 +3,11 @@ const { Bot, BuiltInDatabase: { getJsonBotDatabaseHandler } } = require('picbot-
 const { readdirSync } = require('fs');
 const { join } = require('path');
 const { YouTube } = require('popyt');
+const { Player } = require('discord-player');
 
 require('dotenv').config();
 
 const youtube = new YouTube(process.env.YOUTUBE_API_KEY);
-
 module.exports.youtube = youtube;
 
 const bot = new Bot(new Client(), {
@@ -61,7 +61,7 @@ requireJsFilesSync('./arguments', argument => {
 });
 
 requireJsFilesSync('./commands/', command => {
-    bot.commands.register(command.name, command);
+    bot.commands.register(command);
 });
 
 bot.login(process.env.DISCORD_TOKEN);

@@ -1,17 +1,15 @@
 const { MessageEmbed } = require('discord.js');
 const { calculateLevel } = require('../utils');
+const { Command } = require('picbot-engine');
 
-/**
- * @type {import('picbot-engine').Command}
- */
-const statsCommand = {
+const statsCommand = new Command({
     name: 'stats',
     aliases: ['profile', 'account'],
 
     description: 'Показывает статистику участника сервера',
     group: 'Статистика',
 
-    syntax: '<member:target=_>',
+    syntax: '<member:target=>',
 
     examples: [
         '`!stats` покажет вашу статистику на сервере',
@@ -53,6 +51,6 @@ const statsCommand = {
 
         await message.channel.send({ embed });
     },
-};
+});
 
 module.exports = statsCommand;

@@ -1,7 +1,6 @@
-/**
- * @type {import('picbot-engine').Command}
- */
-const rollCommand = {
+const { Command } = require('picbot-engine');
+
+const rollCommand = new Command({
     name: 'roll',
     aliases: ['dice'],
 
@@ -12,6 +11,6 @@ const rollCommand = {
     execute: async ({ message, args: { random } }) => {
         await message.reply(`🎲 ${random}`);
     },
-};
+});
 
 module.exports = rollCommand;

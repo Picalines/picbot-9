@@ -1,3 +1,5 @@
+const { Command } = require('picbot-engine');
+
 /**
  * @param {import('discord.js').Message} message
  * @param {import('picbot-engine').GuildMemberData} memberData 
@@ -23,10 +25,7 @@ const testAlreadyMarried = async (message, memberData, isExecutor) => {
     return true;
 }
 
-/**
- * @type {import('picbot-engine').Command}
- */
-const marryCommand = {
+const marryCommand = new Command({
     name: 'marry',
 
     description: 'Женит вас на участнике сервера `target`',
@@ -76,6 +75,6 @@ const marryCommand = {
             await message.reply('оу... Похоже твоё сердце только что разбили. На такие случаи у меня есть команда `f` 💔');
         }
     },
-};
+});
 
 module.exports = marryCommand;

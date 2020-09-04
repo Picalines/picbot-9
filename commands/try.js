@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { clamp } = require('../utils');
+const { Command } = require('picbot-engine');
 
 const borderChar = "|";
 const progressChar = "⬜";
@@ -20,10 +21,7 @@ const makeProgressBar = (length, progress) => {
     return bar + borderChar + ` ${Math.floor(progress * 100)}%`;
 }
 
-/**
- * @type {import('picbot-engine').Command}
- */
-const tryCommand = {
+const tryCommand = new Command({
     name: 'try',
 
     description: 'вы пробуете сделать *что-нибудь*',
@@ -47,6 +45,6 @@ const tryCommand = {
 
         await message.reply({ embed: embed });
     },
-};
+});
 
 module.exports = tryCommand;
