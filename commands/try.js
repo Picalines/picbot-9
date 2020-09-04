@@ -21,7 +21,7 @@ const makeProgressBar = (length, progress) => {
     return bar + borderChar + ` ${Math.floor(progress * 100)}%`;
 }
 
-const tryCommand = new Command({
+module.exports = new Command({
     name: 'try',
 
     description: 'вы пробуете сделать *что-нибудь*',
@@ -46,5 +46,3 @@ const tryCommand = new Command({
         await message.reply({ embed: embed });
     },
 });
-
-module.exports = tryCommand;

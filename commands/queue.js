@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const { player } = require('../index');
 const { Command } = require('picbot-engine');
 
-const queueCommand = new Command({
+module.exports = new Command({
     name: 'queue',
 
     description: 'пишет очередь музыкальных треков',
@@ -43,5 +43,3 @@ const queueCommand = new Command({
         await message.reply({ embed });
     },
 });
-
-module.exports = queueCommand;

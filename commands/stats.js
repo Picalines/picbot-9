@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const { calculateLevel } = require('../utils');
 const { Command } = require('picbot-engine');
 
-const statsCommand = new Command({
+module.exports = new Command({
     name: 'stats',
     aliases: ['profile', 'account'],
 
@@ -52,5 +52,3 @@ const statsCommand = new Command({
         await message.channel.send({ embed });
     },
 });
-
-module.exports = statsCommand;

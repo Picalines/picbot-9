@@ -1,6 +1,6 @@
 const { Command } = require("picbot-engine");
 
-const divorceCommand = new Command({
+module.exports = new Command({
     name: 'divorce',
 
     description: 'Расторгает ваш брак. Это может быть обидно',
@@ -30,5 +30,3 @@ const divorceCommand = new Command({
         await message.reply(`ты успешно развёлся с **${partner.displayName}**. *К этому всё и шло...*`);
     },
 });
-
-module.exports = divorceCommand;

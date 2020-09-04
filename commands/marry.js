@@ -25,7 +25,7 @@ const testAlreadyMarried = async (message, memberData, isExecutor) => {
     return true;
 }
 
-const marryCommand = new Command({
+module.exports = new Command({
     name: 'marry',
 
     description: 'Женит вас на участнике сервера `target`',
@@ -76,5 +76,3 @@ const marryCommand = new Command({
         }
     },
 });
-
-module.exports = marryCommand;
