@@ -51,7 +51,7 @@ const readJsFromSync = (path, f) => readdirSync(path).filter(filterJsFiles).forE
  * @param {(exported: any, file: string) => void} f
  */
 const requireJsFilesSync = (folderPath, f) => readJsFromSync(folderPath, file => {
-    const m = require('.\\' + join(folderPath, file));
+    const m = require('./' + join(folderPath, file));
     f(m, file.substr(0, file.length - 3));
 });
 
