@@ -55,13 +55,24 @@ const requireJsFilesSync = (folderPath, f) => readJsFromSync(folderPath, file =>
     f(m, file.substr(0, file.length - 3));
 });
 
-requireJsFilesSync('./events', (listener, name) => {
-    if (listener instanceof Function) {
-        bot.on(name, (...args) => {
-            listener(bot, ...args);
-        });
-    }
-});
+/**
+ * @param {string} path
+ * @param {import('events').EventEmitter} emitter
+ * @param {any[]} otherArgs
+ */
+const requireEvents = (path, emitter, ...otherArgs) => {
+    requireJsFilesSync(path, (listener, name) => {
+        if (listener instanceof Function) {
+            emitter.on(name, (...args) => {
+                listener(emitter, ...otherArgs, ...args);
+            });
+        }
+    });
+}
+
+requireEvents('./events/bot/', bot);
+
+requireEvents('./events/client/', bot.client, bot);
 
 requireJsFilesSync('./arguments', argument => {
     bot.commandArguments.register(argument.name, argument.reader);
