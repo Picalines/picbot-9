@@ -22,9 +22,16 @@ module.exports = new Command({
             throw new Error('Ты находишься в другом голосовом канале!');
         }
 
-        const current = await player.nowPlaying(guildId);
-        if (current.requestedBy.id != executor.user.id) {
-            throw new Error(`Этот трек может пропустить только **${current.requestedBy.username}**!`);
+        if (!executor.permissions.has('ADMINISTRATOR')) {
+            const current = await player.nowPlaying(guildId);
+            if (current.requestedBy.id != executor.user.id) {
+                throw new Error(`Этот трек может пропустить только **${current.requestedBy.username}**!`);
+            }
+        }
+
+        if (player.getQueue(guildId).repeatMode) {
+            await player.setRepeatMode(guildId, false);
+            await message.channel.send(`Повтор трека выключен`);
         }
 
         await player.skip(guildId);
