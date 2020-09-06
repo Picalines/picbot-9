@@ -1,10 +1,12 @@
 // @ts-ignore
 require('ytpl').do_warn_deprecate = false;
 
-const { Client } = require('discord.js');
-const { Bot, BuiltInDatabase: { getJsonBotDatabaseHandler } } = require('picbot-engine');
 const { readdirSync } = require('fs');
 const { join } = require('path');
+
+const { Client } = require('discord.js');
+const { Bot, BuiltInDatabase: { getJsonBotDatabaseHandler }, Command } = require('picbot-engine');
+const { YouTube } = require('popyt');
 const { Player } = require('discord-player');
 
 require('dotenv').config();
@@ -12,6 +14,8 @@ require('dotenv').config();
 const client = new Client();
 
 const player = new Player(client);
+
+const youtube = new YouTube(process.env.YOUTUBE_API_KEY);
 
 const bot = new Bot(client, {
     database: {
@@ -30,7 +34,7 @@ const bot = new Bot(client, {
 });
 
 module.exports = {
-    client, player, bot,
+    client, player, youtube, bot,
 };
 
 /** @param {string} file */
@@ -42,23 +46,21 @@ const filterJsFiles = file => file.endsWith('.js');
  */
 const readJsFromSync = (path, f) => readdirSync(path).filter(filterJsFiles).forEach(f);
 
-const ignoreModuleKey = '__ignoreBotModule';
-
 /**
  * @param {string} folderPath
  * @param {(exported: any, file: string) => void} f
  */
 const requireJsFilesSync = (folderPath, f) => readJsFromSync(folderPath, file => {
     const m = require('.\\' + join(folderPath, file));
-    if (m[ignoreModuleKey] !== true) {
-        f(m, file.substr(0, file.length - 3));
-    }
+    f(m, file.substr(0, file.length - 3));
 });
 
 requireJsFilesSync('./events', (listener, name) => {
-    bot.on(name, (...args) => {
-        listener(bot, ...args);
-    });
+    if (listener instanceof Function) {
+        bot.on(name, (...args) => {
+            listener(bot, ...args);
+        });
+    }
 });
 
 requireJsFilesSync('./arguments', argument => {
@@ -66,7 +68,9 @@ requireJsFilesSync('./arguments', argument => {
 });
 
 requireJsFilesSync('./commands/', command => {
-    bot.commands.register(command);
+    if (command instanceof Command) {
+        bot.commands.register(command);
+    }
 });
 
 bot.login(process.env.DISCORD_TOKEN);

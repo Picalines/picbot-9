@@ -24,7 +24,8 @@ module.exports.clamp = (value, min, max) => Math.min(Math.max(value, min), max);
  * @param {number} seconds
  */
 module.exports.timestamp = (seconds) => {
-    const dateObj = new Date(seconds * 1000);
+    const dateObj = new Date(0);
+    dateObj.setSeconds(seconds);
     const hours = dateObj.getUTCHours().toString();
     const minutes = dateObj.getUTCMinutes().toString();
     seconds = dateObj.getSeconds();
@@ -40,3 +41,10 @@ module.exports.timestamp = (seconds) => {
  * @param {number} max
  */
 module.exports.inRange = (number, min, max) => number >= min && number <= max;
+
+/**
+ * @template T
+ * @param {T[]} array
+ * @returns {T} 
+ */
+module.exports.randomFrom = (array) => array[Math.floor(Math.random() * array.length)];
