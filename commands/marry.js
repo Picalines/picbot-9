@@ -49,14 +49,14 @@ module.exports = new Command({
         await message.channel.send(`**${target.displayName}**, напиши **да**, чтобы пожениться с **${executor.displayName}**`);
 
         /**
-         * @param {{ content: string; }} msg
+         * @param {{ cleanContent: string; }} msg
          */
-        const filter = msg => {
-            const lower = msg.content.toLowerCase();
-            return lower.startsWith('да') || lower.startsWith('нет');
+        const answerFilter = msg => {
+            const lower = msg.cleanContent.toLowerCase();
+            return lower.endsWith('да') || lower.endsWith('нет');
         };
 
-        const result = await message.channel.awaitMessages(filter, { time: 120000, max: 1 });
+        const result = await message.channel.awaitMessages(answerFilter, { time: 120000, max: 1 });
         const hadAnswer = result.size == 1;
 
         if (!hadAnswer) {
