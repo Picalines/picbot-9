@@ -2,3 +2,4 @@ token.txt
 .env
 node_modules/
 database/
+.vscode/
