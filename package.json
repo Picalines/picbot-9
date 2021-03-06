@@ -2,9 +2,10 @@
     "name": "picbot-9",
     "version": "1.0.0",
     "description": "ninth (actually third) version of picbot",
-    "main": "index.js",
+    "type": "module",
+    "main": "src/index.js",
     "scripts": {
-        "start": "node ."
+        "start": "node -r dotenv/config ."
     },
     "keywords": [
         "discord-bot",
@@ -15,10 +16,10 @@
     "dependencies": {
         "@discordjs/opus": "^0.3.2",
         "@types/node": "^14.0.27",
-        "discord-player": "^2.3.1",
+        "discord-player": "^3.4.0",
         "discord.js": "^12.3.1",
         "dotenv": "^8.2.0",
-        "picbot-engine": "^1.1.1",
+        "picbot-engine": "^2.0.0",
         "popyt": "^4.1.1",
         "ytdl-core": "^3.2.2"
     }
