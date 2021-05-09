@@ -30,7 +30,7 @@ export default new Command({
             await message.reply('непон.');
         }
         else {
-            await message.channel.send('- Алло, ФБР? МЫ НАШЛИ $TARGET\n- ВЫЕЗЖАЕМ!');
+            await message.channel.send(`- Алло, ФБР? МЫ НАШЛИ **${target.displayName.toUpperCase()}**\n- ВЫЕЗЖАЕМ!`);
             await message.channel.send(randomFrom(gifs));
         }
     },
