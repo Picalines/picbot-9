@@ -23,8 +23,8 @@ export default new Command({
         const partnersPartnerAccess = database.accessState(partner, partnerState);
 
         await Promise.all([
-            executorPartnerAccess.reset(),
-            partnersPartnerAccess.reset()
+            executorPartnerAccess.set(null),
+            partnersPartnerAccess.set(null),
         ]);
 
         await message.reply(`ты успешно развёлся с **${partner.displayName}**. *К этому всё и шло...*`);
