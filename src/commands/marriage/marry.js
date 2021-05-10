@@ -17,6 +17,10 @@ export default new Command({
     ),
 
     execute: async ({ executor, message, bot: { database }, args: [target] }) => {
+        if (executor.user.bot || target.user.bot) {
+            throw new Error('🤖?');
+        }
+
         const executorPartnerAccess = database.accessState(executor, partnerState);
         const targetPartnerAccess = database.accessState(target, partnerState);
 
@@ -31,9 +35,13 @@ export default new Command({
         await message.channel.send(`**${target.displayName}**, напиши **да**, чтобы пожениться с **${executor.displayName}**`);
 
         /**
-         * @param {{ cleanContent: string; }} msg
+         * @param {import('picbot-engine').GuildMessage} msg
          */
         const answerFilter = msg => {
+            if (msg.member.id != target.id) {
+                return false;
+            }
+
             const lower = msg.cleanContent.toLowerCase();
             return lower.endsWith('да') || lower.endsWith('нет');
         };
