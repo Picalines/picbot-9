@@ -14,14 +14,10 @@
     "author": "picalines",
     "license": "ISC",
     "dependencies": {
-        "@discordjs/opus": "^0.3.2",
         "@types/node": "^14.0.27",
-        "discord-player": "^3.4.0",
         "discord.js": "^12.3.1",
         "dotenv": "^8.2.0",
         "picbot-engine": "^2.4.0",
-        "picbot-mongoose": "^1.0.2",
-        "popyt": "^4.1.1",
-        "ytdl-core": "^3.2.2"
+        "picbot-mongoose": "^1.0.2"
     }
 }
