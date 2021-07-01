@@ -30,7 +30,7 @@ export default new Command({
             .setThumbnail(target.user.avatarURL() ?? '')
             .setColor(target.displayColor);
 
-        const partner = await database.accessState(target, partnerState).member();
+        const partner = await database.accessState(target, partnerState).value();
         if (partner) {
             embed.addField('Вторая половинка', partner.toString());
         }

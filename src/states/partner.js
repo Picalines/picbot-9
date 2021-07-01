@@ -6,7 +6,7 @@ export const partnerState = new State({
 
     defaultValue: 'null',
 
-    accessFabric: memberAccess(false),
+    accessFabric: memberAccess,
 });
 
 export default partnerState;

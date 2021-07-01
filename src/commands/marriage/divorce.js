@@ -13,7 +13,7 @@ export default new Command({
     execute: async ({ message, executor, bot: { database } }) => {
         const executorPartnerAccess = database.accessState(executor, partnerState);
 
-        const partner = await executorPartnerAccess.member();
+        const partner = await executorPartnerAccess.value();
 
         if (!partner) {
             await message.reply('у тебя же нет второй половинки... это даже грустно');

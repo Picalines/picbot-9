@@ -24,11 +24,11 @@ export default new Command({
         const executorPartnerAccess = database.accessState(executor, partnerState);
         const targetPartnerAccess = database.accessState(target, partnerState);
 
-        if (await executorPartnerAccess.member()) {
+        if (await executorPartnerAccess.value()) {
             throw new Error('Ты уже состоишь в браке. Стоп...');
         }
 
-        if (await targetPartnerAccess.member()) {
+        if (await targetPartnerAccess.value()) {
             throw new Error(`**${target.displayName}** уже состоит в браке. Понимаю, обидно.`);
         }
 
@@ -62,8 +62,8 @@ export default new Command({
         }
 
         await Promise.all([
-            executorPartnerAccess.set(target.id),
-            targetPartnerAccess.set(executor.id),
+            executorPartnerAccess.set(target),
+            targetPartnerAccess.set(executor),
         ]);
 
         await message.reply('ура! Всё прошло успешно! 💘');
