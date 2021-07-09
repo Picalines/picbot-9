@@ -9,7 +9,7 @@ export const prefixesState = new State({
     name: 'prefixes',
     entityType: 'guild',
 
-    defaultValue: ['+', 'p9.', 'picbot.'],
+    defaultValue: ['picbot.', '+', '>'],
 
     accessFabric: access => ({
         ...access,
