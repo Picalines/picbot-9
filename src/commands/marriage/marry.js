@@ -32,7 +32,7 @@ export default new Command({
             throw new Error(`**${target.displayName}** уже состоит в браке. Понимаю, обидно.`);
         }
 
-        await message.channel.send(`**${target.displayName}**, напиши **да**, чтобы пожениться с **${executor.displayName}**`);
+        await message.channel.send(`**${target.displayName}**, напиши **да**, чтобы вступить в брак с **${executor.displayName}**`);
 
         /**
          * @param {import('picbot-engine').GuildMessage} msg
