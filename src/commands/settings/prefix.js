@@ -1,4 +1,4 @@
-import { Command, ArgumentSequence, optionalReader, keywordReader, wordReader, unorderedList } from "picbot-engine";
+import { Command, ArgumentSequence, optionalReader, keywordReader, wordReader, unorderedList, assert } from "picbot-engine";
 
 import { prefixesState } from "../../states/prefixes.js";
 
@@ -34,13 +34,8 @@ export default new Command({
             return;
         }
 
-        if (!executor.permissions.has('MANAGE_GUILD')) {
-            throw new Error('Для `add` и `rm` нужно право управления сервером');
-        }
-
-        if (!prefix) {
-            throw new Error(`Для операции ${operation} необходимо указать префикс`);
-        }
+        assert(executor.permissions.has('MANAGE_GUILD'), 'Для `add` и `rm` нужно право управления сервером');
+        assert(prefix, `Для операции ${operation} необходимо указать префикс`);
 
         switch (operation) {
             default:
