@@ -8,6 +8,8 @@ export default new Command({
     group: 'Настройки',
     description: 'Настраивает приветствующее сообщение на сервере',
 
+    permissions: 'MANAGE_GUILD',
+
     arguments: new ArgumentSequence(
         {
             description: 'Операция',
