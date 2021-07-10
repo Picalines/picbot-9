@@ -1,0 +1,57 @@
+{
+	"command": {
+		"scope": "javascript",
+		"prefix": "command",
+		"body": [
+			"import { Command } from 'picbot-engine';",
+			"",
+			"export default new Command({",
+			"    name: '$1',",
+			"",
+			"    group: '$2',",
+			"    description: '$3',",
+			"",
+			"    tutorial: '$4',",
+			"",
+			"    execute: async ({ $5 }) => {",
+			"        $0",
+			"    },",
+			"});",
+			"",
+		],
+	},
+
+	"state": {
+        "scope": "javascript",
+        "prefix": "state",
+        "body": [
+            "import { State } from 'picbot-engine';",
+            "",
+            "export const $1State = new State({",
+            "   name: '$1',",
+            "   entityType: '$2',",
+            "   defaultValue: $3,$0",
+            "});",
+            "",
+            "export default $1State;",
+            "",
+        ],
+    },
+
+    "event": {
+        "scope": "javascript",
+        "prefix": "event",
+        "body": [
+            "import { BotEventListener } from 'picbot-engine';",
+            "",
+            "export default new BotEventListener(",
+            "   bot => bot.${1|events,clientEvents|}.$2,",
+            "",
+            "   async (bot$3, $4) => {",
+            "       $0",
+            "   },",
+            ");",
+            "",
+        ],
+    },
+}
