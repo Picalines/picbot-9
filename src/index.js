@@ -1,10 +1,10 @@
-import { Client } from 'discord.js';
+import { Client, Intents } from 'discord.js';
 import { Bot } from 'picbot-engine';
 import { mongooseDatabaseHandler } from 'picbot-mongoose';
 
 import { prefixesState } from './states/prefixes.js';
 
-const client = new Client();
+const client = new Client({ ws: { intents: Intents.ALL } });
 
 const bot = new Bot(client, {
     token: 'DISCORD_TOKEN',
