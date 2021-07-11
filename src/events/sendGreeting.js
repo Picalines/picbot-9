@@ -6,15 +6,16 @@ export default new BotEventListener(
 
     async ({ database }, member) => {
         member = await member.fetch();
+        const guild = await member.guild.fetch();
 
-        if (!member.guild.systemChannel) {
+        if (member.user.bot || !guild.systemChannel) {
             return;
         }
 
-        const greeting = await database.accessState(member.guild, greetingState).formatted(member);
+        const greeting = await database.accessState(guild, greetingState).formatted(member);
 
         if (greeting) {
-            await member.guild.systemChannel.send(greeting);
+            await guild.systemChannel.send(greeting);
         }
     },
 );

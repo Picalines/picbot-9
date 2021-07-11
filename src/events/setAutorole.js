@@ -1,4 +1,4 @@
-import { assert, BotEventListener } from 'picbot-engine';
+import { BotEventListener } from 'picbot-engine';
 import { autoroleState } from '../states/autorole.js';
 
 export default new BotEventListener(
@@ -7,9 +7,13 @@ export default new BotEventListener(
     async ({ database }, member) => {
         member = await member.fetch();
 
-        const { guild, guild: { me } } = member;
+        let { guild, guild: { me } } = member;
 
-        if (!me?.permissions.has('MANAGE_ROLES')) return;
+        me = await me?.fetch() ?? null;
+
+        if (member.user.bot || !me?.permissions.has('MANAGE_ROLES')) {
+            return;
+        }
 
         const autorole = await database.accessState(guild, autoroleState).value();
 
