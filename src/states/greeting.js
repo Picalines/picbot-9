@@ -1,8 +1,9 @@
 import { State } from "picbot-engine";
+import { escapeRegExp } from "../utils/string.js";
 
 export const GREETING_MEMBER_TEMPLATE = '$member';
 
-const templateRegex = new RegExp(GREETING_MEMBER_TEMPLATE, 'g');
+const templateRegex = new RegExp(escapeRegExp(GREETING_MEMBER_TEMPLATE), 'g');
 
 export const greetingState = new State({
     name: 'greeting',
